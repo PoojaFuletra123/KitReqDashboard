@@ -3,10 +3,18 @@ import { Table, RefreshCw, AlertCircle, Search, Package } from 'lucide-react';
 
 const CETEC_API_URL = 'https://buildamtech.cetecerp.com/goapis/api/v1/part_specs/search';
 
+interface PartDetail {
+  prcpart: string;
+  qoh: number;
+  qty: number;
+  qoo: number;
+  availQty: number;
+}
+
 function App() {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [data, setData] = useState([]);
+  const [error, setError] = useState<string | null>(null);
+  const [data, setData] = useState<PartDetail[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   const fetchData = async (partNumber = '') => {
@@ -31,7 +39,7 @@ function App() {
       }
 
       const responseData = await response.json();
-      let transformedData = [];
+      const transformedData: PartDetail[] = [];
 
       if (Array.isArray(responseData)) {
         responseData.forEach(item => {
